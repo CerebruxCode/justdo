@@ -3,6 +3,12 @@
 #  Usage justdo "task name" duration(mins) interval(seconds)
 
 ASSETS="/home/$USER/.justdo"
+
+# Empty initialization just to make shellcheck stop complaining 
+mins=""
+interval=""
+task=""
+
 source "${ASSETS}/justdo.conf"
 
 # Pomodoro time start: notify user
