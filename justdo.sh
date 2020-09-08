@@ -1,18 +1,11 @@
-#!/bin/bash
-#  Usage tomato ["task name"] [mins] [click_interval]
+#!/bin/bash -x
+# shellcheck source=/dev/null
+#  Usage justdo "task name" duration(mins) interval(seconds)
 
-task=${1:-"Starting pomodoro task"}
-mins=${2:-25}
-interval=${3:-10};
+ASSETS="/home/$USER/.justdo"
+source "${ASSETS}/justdo.conf"
 
-TICKS="no"
-APP_NAME="Pomodoro"
-SOUND_FILE="/usr/share/sounds/Oxygen-Im-Phone-Ring.ogg"
-SOUND_CLICK_FILE="/usr/share/sounds/Oxygen-Im-Message-In.ogg"
-PLAYER='paplay'
-BAR_WIDTH=40;
-
-#  Pomodoro time start: notify user
+# Pomodoro time start: notify user
 secs=$(( mins * 60 ))
 loops=$((secs / interval))
 notify-send "${APP_NAME}" "Start: ${task}"
@@ -26,7 +19,7 @@ do
 
     bar1_w=$(( percentage * BAR_WIDTH / 100 ));
     bar2_w=$(( BAR_WIDTH - bar1_w ));
-    bar1_s=$(printf "%${bar1_w}s" | tr " " "#")
+    bar1_s=$(printf "%${bar1_w}s" | tr " " "|")
     bar2_s=$(printf "%${bar2_w}s" | tr " " ".")
     progress="${bar1_s}${bar2_s}"
 
@@ -46,5 +39,6 @@ done
 printf "\r\033[K%s: Done! \n" "${task}"
 
 #  Time end: play sound and notify
-${PLAYER} "${SOUND_FILE}" 2> /dev/null
 notify-send "${APP_NAME}" "End: ${task}"
+${PLAYER} "${SOUND_FILE}" 2> /dev/null
+
