@@ -18,6 +18,13 @@ do_sound() {
   fi
 }
 
+do_end_msg() {
+  echo "Your pomodo is Done!"
+  echo "   * Do make a 5 min break!"
+  echo "   * Do not thing about your problem!"
+  echo "   * Make a 30 mins break after 4 pomodoro sessions"
+}
+
 # Notify and optionaly play a sound
 do_notify() {
   local play_sound=${3:-yes}
@@ -44,6 +51,15 @@ do_read_config() {
   # Locate sound files
   SOUND_FILE=$(do_find_asset "sounds/complete.ogg")
   SOUND_CLICK_FILE=$(do_find_asset "sounds/reminder.ogg")
+
+  # Colors
+  GREEN="$(tput setaf 2)$(tput setab 2)"
+  RED="$(tput setaf 1)$(tput setab 1)"
+  # Respect NO_COLOR
+  if [[ -v NO_COLOR ]]; then
+    GREEN=""
+    RED=""
+  fi
 
   # CASCADE load of config files
   # First read {XDG_CONFIG_DIRS}/justdo then XDG_CONFIG_HOME/justdo
@@ -156,14 +172,6 @@ task=${1:-${TASK_DEF_NAME}}
 mins=${2:-${DEF_TASK_DUR}}
 interval=${3:-${DEF_TASK_TICK}}
 
-GREEN="$(tput setaf 2)$(tput setab 2)"
-RED="$(tput setaf 1)$(tput setab 1)"
-# Respect NO_COLOR
-if [[ -v NO_COLOR ]]; then
-  GREEN=""
-  RED=""
-fi
-
 # Pomodoro time start: notify user
 do_notify "Start: ${task}"
 
@@ -197,8 +205,5 @@ echo -ne "${RESET_LINE}${task}: Done!\n"
 
 #  Time end: play sound and notify
 do_notify "End: ${task}" "${SOUND_FILE}" "${SOUND_DONE}"
+do_end_msg
 
-echo "Your pomodo is Done!"
-echo "   * Do make a 5 min break!"
-echo "   * Do not thing about your problem!"
-echo "   * Make a 30 mins break after 4 pomodoro sessions"
