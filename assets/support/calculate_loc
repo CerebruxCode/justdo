@@ -1,0 +1,16 @@
+#!/bin/bash
+cd "$(git rev-parse --show-toplevel)" || exit
+
+{
+  printf "# Lines of code report\n\n"
+  printf "## Absolute numbers\n"
+  cloc . --vcs=git --quiet --md . | tail --lines +4
+  printf "## Relative to code lines\n"
+  cloc . --vcs=git --quiet --md  --by-percent c . | tail --lines +4
+  printf "## Relative to total lines\n"
+  cloc . --vcs=git --quiet --md  --by-percent cmb . | tail --lines +4
+} > ../LOC.md
+mv ../LOC.md assets/docs/LOC.md
+sed -i '37d;25d;13d' assets/docs/LOC.md
+
+git add assets/docs/LOC.md

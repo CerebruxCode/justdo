@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+#
+#    update_gh_pages.sh - helper script to create the project website
+#    Copyright:
+#       2020 Ioannis Tsagatakis <tsagatakis@protonmail.com>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, version 3 of the License.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+set -ex
+echo "Getting repository info"
+top_dir="$(git rev-parse --show-toplevel)"
+cd "$top_dir"
+
+push_url=$(git remote show origin  | grep "Push  URL"  | cut -d ' ' -f6)
+fetch_url=$(git remote show origin | grep "Fetch URL"  | cut -d ' ' -f5)
+echo "push_url: '$push_url'"
+echo "fetch_url: '$fetch_url'"
+
+set +e
+rm -rf /tmp/justdo
+set -e
+
+mkdir /tmp/justdo
+git clone "${fetch_url}" /tmp/justdo
+
+pushd /tmp/justdo/
+git checkout gh-pages
+
+# Empty all files
+git rm -r ./*
+
+# Copy files
+cp -r "$top_dir/assets/docs/html/"* .
+
+# Create manual pages
+mkdir -p "/tmp/justdo/man"
+ronn --html --warnings --style toc --manual="ucaresystem" --organization="Utappia" --date="2020-10-01" "$top_dir/assets/docs/ronn/"*.ronn
+mv "$top_dir"/assets/docs/ronn/*.1.html "/tmp/justdo/man/"
+
+# Show list of files
+find . -name "*" | grep -v "git"
+
+git add ./*
+mod_date=$(date +"%F %T")
+git commit -m "rebuild manual at ${mod_date}"
+git push "${push_url}" gh-pages
+
+popd #/tmp/justdo/
+
+xdg-open http://code.cerebrux.net/justdo/

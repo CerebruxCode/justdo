@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ucaresystem</title>
+    <link href="https://www.utappia.org/favicon.ico" rel="icon" type="image/x-icon">
+    <style>
+        body {
+            font-size: 24px;
+            line-height: 1.5;
+            font-family: georgia, serif;
+            color: #555;
+        }
+
+        div#index {
+            width: 28em;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: normal;
+            color: #000;
+            margin-bottom: 0;
+            letter-spacing: -3px;
+        }
+
+        h3 {
+            text-align: center;
+            font-weight: normal;
+            color: #444;
+            margin-top: -20px;
+            margin-bottom: 40px;
+        }
+
+        h4 {
+            font-weight: normal;
+            font-size: 26px;
+            color: #111;
+        }
+
+        p, dl {
+            margin-left: 40px
+        }
+
+        .aux {
+            font-family: monospace;
+            font-size: 20px;
+            letter-spacing: 1px;
+        }
+
+        .also {
+            font-size: 18px
+        }
+
+        .copy {
+            font-size: 16px;
+            text-align: center;
+            color: #111
+        }
+
+        .man-ref {
+            font-family: monospace;
+            letter-spacing: -2px;
+        }
+
+        .titletext {
+            line-height: 0.9em;
+        }
+
+        .logo {
+            display: inline-block;
+            vertical-align: top;
+            float: left;
+        }
+
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
+
+        #forkongithub a {
+            background: #36d72b;
+            color: #fff;
+            text-decoration: none;
+            font-family: arial, sans-serif;
+            text-align: center;
+            font-weight: bold;
+            padding: 5px 40px;
+            font-size: 1rem;
+            line-height: 2rem;
+            position: relative;
+            transition: 0.5s;
+        }
+
+        #forkongithub a:hover {
+            background: #d79d2b;
+            color: #000;
+        }
+
+        #forkongithub a::before, #forkongithub a::after {
+            content: "";
+            width: 100%;
+            display: block;
+            position: absolute;
+            top: 1px;
+            left: 0;
+            height: 1px;
+            background: #36d72b;
+        }
+
+        #forkongithub a::after {
+            bottom: 1px;
+            top: auto;
+        }
+
+        @media screen and (min-width: 800px) {
+            #forkongithub {
+                position: absolute;
+                display: block;
+                top: 0;
+                right: 0;
+                width: 200px;
+                overflow: hidden;
+                height: 200px;
+                z-index: 9999;
+            }
+
+            #forkongithub a {
+                width: 200px;
+                position: absolute;
+                top: 60px;
+                right: -60px;
+                transform: rotate(45deg);
+                -webkit-transform: rotate(45deg);
+                -ms-transform: rotate(45deg);
+                -moz-transform: rotate(45deg);
+                -o-transform: rotate(45deg);
+                box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
+            }
+        }
+    </style>
+</head>
+
+<body>
+<span id="forkongithub"><a href="https://github.com/CerebruxCode/justdo">Fork me on GitHub</a></span>
+<div id='index'>
+    <img src="ucaresystem.png" class="logo" name="logo" alt="logo"/>
+    <h1 style="color:#d79d2b;">justdo</h1>
+    <h3 class="titletext" style="color:#36d72b;">A Simple pomodoro timer <br/>no deep shits!!</h3>
+
+    <hr style="color:#d79d2b;"/>
+
+    <h4>Auxiliary</h4>
+    <p class='aux'>
+        <a href='https://github.com/CerebruxCode/justdo#readme'>README</a>,
+        <a href='https://github.com/CerebruxCode/justdo/blob/master/docs/INSTALL.md#installation-instructions'>INSTALLING</a>,
+        <a href='https://github.com/CerebruxCode/justdo/blob/master/debian/changelog'>CHANGES</a>,
+        <a href='https://github.com/CerebruxCode/justdo/blob/master/debian/copywrite'>COPYING</a>,
+        <a href='https://github.com/CerebruxCode/justdo/blob/master/docs/AUTHORS.md#authors'>AUTHORS</a>
+    </p>
+
+    <h4>About</h4>
+    A simple pomodoro timer
+
+    <h4>Video</h4>
+
+    <h4>Manuals</h4>
+    <dl>
+        <dt><a class='man-ref' href='man/justdo.1.html'>justdo(1)</a></dt>
+        <dd>A simple pomodoro timer in Bash</dd>
+    </dl>
+
+    <h4>On the press</h4>
+    <h4>Brooks Law</h4>
+
+    <p>The comic refers to the phenomenon in which computer programmers attempt to create programs to automate menial
+        but
+        frequent tasks, to save time and effort. These attempts often end up taking much more time than the menial tasks
+        would have taken. The first graph reflects the assumed ideal that leads programmers into such an attempt:
+        writing
+        the program will take more effort initially, but once the program is complete, it will take over the routine
+        tasks,
+        leaving the programmer free to do something else.</p>
+
+    <img src="automation.png" alt="automation" name="automation" class="center"/>
+    <a href="https://xkcd.com/1319/" class="center">https://xkcd.com/1319/</a>
+
+    <p>However, writing a program often turns out to be not that simple: programs can have defects, and certain
+        functionalities can be hard to implement. Because of this, programmers usually spend more time than projected to
+        finish a program. As time goes on, the desire to see it finished can consume the programmer's effort and
+        attention,
+        with the menial tasks left undone.</p>
+
+    <p>So this simple script is more than 700 lines of bash code. The number of bugs is still unknown.</p>
+
+</div>
+</body>
+</html>

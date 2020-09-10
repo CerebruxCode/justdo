@@ -1,0 +1,22 @@
+/justdo(1) -- Simple pomodoro timer for the shell
+=================================================
+
+## SYNOPSIS
+
+`justdo` ....
+
+## DESCRIPTION
+
+
+## EXAMPLE
+    justdo "Write essay"
+
+## AUTHOR
+This manpage and the utility was originally written  by  Ioannis Tsagkatakis  <tsagatakis@protonmail.com>.
+
+
+## COPYRIGHT
+ucaresystem-core is Copyright (C) 2020 by Utappia http://utappia.org under GPL3 license.
+
+On  Debian  systems,  the  complete text of the GNU General Public License can be found in
+/usr/share/common-licenses/GPL, or on the web at http://www.gnu.org/licenses/gpl.txt.
