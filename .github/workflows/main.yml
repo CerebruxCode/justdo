@@ -18,4 +18,4 @@ jobs:
         uses: azohra/shell-linter@latest
         with:
           args: --external-sources
-          path: "shelldio" 
+          path: "justdo" 
