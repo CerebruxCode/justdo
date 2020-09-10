@@ -15,8 +15,10 @@ or you can name your task, customize the timer and the reminder (in minutes) lik
 justdo 'some text" minutes reminder
 
 ```
-justdo "super boring work" 15 13
+justdo "super boring work" 15 10
 ```
+
+Work nice in a small tmux horizontal window
 
 ### Installation
 
