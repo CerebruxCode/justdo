@@ -20,16 +20,19 @@ do_notify() {
 }
 
 # Calculate bars
-# Usage: var=$(do_bars percentage)
-# Environment: GREEN, RESETC, BAR_WIDTH
+# Usage: var=$(do_bars percentage, barwidth, color_str)
 # TODO: if terminal supports use fractions UTF8 chars
 do_bars() {
     percentage=$1
-    bar1_w=$(( percentage * BAR_WIDTH / 100 ));
-    bar2_w=$(( BAR_WIDTH - bar1_w ));
+    bar_width=$2
+    color_str=$3
+    RESETC="$(tput sgr0)"
+
+    bar1_w=$(( percentage * bar_width / 100 ));
+    bar2_w=$(( bar_width - bar1_w ));
     bar1_s=$(printf "%${bar1_w}s" | tr " " "#")
     bar2_s=$(printf "%${bar2_w}s" | tr " " ".")
-    progress="${GREEN}${bar1_s}${RESETC}${bar2_s}"
+    progress="${color_str}${bar1_s}${RESETC}${bar2_s}"
     echo "${progress}"
 }
 
@@ -91,11 +94,13 @@ task=${1:-${TASK_DEF_NAME}}
 mins=${2:-${DEF_TASK_DUR}}
 interval=${3:-${DEF_TASK_TICK}}
 
+GREEN="$(tput setaf 2)$(tput setab 2)"
+RED="$(tput setaf 1)$(tput setab 1)"
 # Respect NO_COLOR
-[[ -v NO_COLOR ]] && color="no"
-GREEN="$(tput setaf 7)$(tput setab 2)"
-RESETC="$(tput sgr0)"
-[[ "$color" == "no" ]] && GREEN=""
+if [[ -v NO_COLOR ]]; then
+  GREEN=""
+  RED=""
+fi
 
 # Pomodoro time start: notify user
 do_notify "Start: ${task}"
@@ -106,23 +111,27 @@ loops=$((secs / interval))
 
 # Progress bar loop
 SECONDS=0
+color=$GREEN
 for ((i=0; i<loops; i++)); do
     duration=$SECONDS;
-    percentage="$(( 100 - 100*(secs - duration) / secs ))";
-    percentage_str="${percentage}%"
-    bar=$(do_bars $percentage)
-    rem=$(do_time_fmt total_sec duration)
-    printf "\r%s Time left %s (%s) " "$task: $bar" "$rem" "$percentage_str"
-
-    # Did time pass?
     if (( duration > secs )); then
         break;
     fi
-    sleep "$interval";
 
-    [ "${ticks}" == "yes" ] && do_sound "${SOUND_CLICK_FILE}"
+    (( i > loops* 3/4 )) && color=$RED;
+    percentage="$(( 100 - 100*(secs - duration) / secs ))";
+    percentage_str="${percentage}%"
+    bar=$(do_bars $percentage "$BAR_WIDTH" "$color")
+    rem=$(do_time_fmt $duration $secs)
+    echo -ne "\r${task}: ${bar} Time left ${rem} (${percentage_str}) "
+
+    sleep "$interval"
+    if [ "${ticks}" == "yes" ]; then
+      do_sound "${SOUND_CLICK_FILE}"
+    fi
 done
-printf "\r\033[K%s: Done! \n" "${task}"
+RESET_LINE="\r\033[K"
+echo -ne "${RESET_LINE}${task}: Done!\n"
 
 #  Time end: play sound and notify
 do_notify "End: ${task}" "${SOUND_FILE}"
