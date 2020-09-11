@@ -70,19 +70,8 @@ function color_print() {
     echo -ne "${color_table[None]}"
 }
 
-# Play a sound file
-do_sound() {
-  if [[ -f "$1" ]]; then
-    ${PLAYER} "$1" > /dev/null 2>&1 &
-  else
-    echo "Error: File $1 not found!"
-    exit
-  fi
-}
-
 # Format time left
 # Usage var=$(do_time_fmt time total)
-#
 do_time_fmt() {
     local time=$1
     local total=$2

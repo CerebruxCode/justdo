@@ -63,7 +63,6 @@ for ((i=0; i<total_secs; i++)); do
     bar_text=$pomodoro_almost_done
   fi
 
-  (( i > loops* 3/4 )) && color=$RED;
   percentage="$(( 100 - 100*(total_secs - duration) / total_secs ))";
   bar_width=$(( percentage * _arg_width / 100 ))
   line=$(color_print "${bar_text}" "$bar_width" "${bar_color}")
