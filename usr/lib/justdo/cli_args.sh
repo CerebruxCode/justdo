@@ -16,7 +16,6 @@
 # ARG_HELP([A simple pomodoro timer for the shell.],[No more deep shits, just use the pomodoro timer.])
 
 # ARG_POSITIONAL_SINGLE([task_name],[Pomodoro task name],[Pomodoro])
-# ARG_POSITIONAL_DOUBLEDASH([])
 
 # ARG_USE_ENV([NOTIFIER],[],[The executable used to show notifications])
 # ARG_USE_ENV([NOTIFY_TITLE],[],[The notification header])
@@ -109,7 +108,7 @@ _arg_show_percentage="off"
 print_help()
 {
   printf '%s\n' "A simple pomodoro timer for the shell."
-  printf 'Usage: %s [-d|--duration <mins>] [-c|--color <color>] [-r|--rev-color <color>] [-w|--width <chars>] [--(no-)notify] [--(no-)sound] [--(no-)show] [--(no-)show-percentage] [-v|--version] [-h|--help] [--] [<task_name>]\n' "$0"
+  printf 'Usage: %s [-d|--duration <mins>] [-c|--color <color>] [-r|--rev-color <color>] [-w|--width <chars>] [--(no-)notify] [--(no-)sound] [--(no-)show] [--(no-)show-percentage] [-v|--version] [-h|--help] [<task_name>]\n' "$0"
   printf '\t%s\n' "<task_name>: Pomodoro task name (default: 'Pomodoro')"
   printf '\t%s\n' "-d, --duration: Pomodoro time in mins (default: '25 ')"
   printf '\t%s\n' "-c, --color: Color of bar or None. Can be one of: 'Red', 'Green', 'Yellow', 'Blue' and 'None' (default: 'Blue ')"
@@ -139,19 +138,6 @@ parse_commandline()
   while test $# -gt 0
   do
     _key="$1"
-    # If two dashes (i.e. '--') were passed on the command-line,
-    # assign the rest of arguments as positional arguments and bail out.
-    if test "$_key" = '--'
-    then
-      shift
-      # Handle the case when the double dash is the last argument.
-      test $# -gt 0 || break
-      _positionals+=("$@")
-      _positionals_count=$((_positionals_count + $#))
-      shift $(($# - 1))
-      _last_positional="$1"
-      break
-    fi
     case "$_key" in
       # We support whitespace as a delimiter between option argument and its value.
       # Therefore, we expect the --duration or -d value.

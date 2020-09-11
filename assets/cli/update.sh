@@ -26,3 +26,10 @@ argbash --type=bash-script --strip=user-content --commented \
         --output="${usr}/lib/justdo/cli_args.sh"\
         cli_args.sh.in
 
+echo "*** Createing completion file"
+mkdir -p "${usr}/etc/bash_completion.d"
+argbash --type=completion \
+        --output="${usr}/etc/bash_completion.d/justdo"\
+        cli_args.sh.in
+
+

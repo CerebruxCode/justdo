@@ -16,7 +16,6 @@
 # ARG_HELP([A simple pomodoro timer for the shell.], [No more deep shits, just use the pomodoro timer.])
 
 # ARG_POSITIONAL_SINGLE([task_name], [Pomodoro task name], [Pomodoro])
-# ARG_POSITIONAL_DOUBLEDASH()
 
 # ARG_USE_ENV([NOTIFIER], , [The executable used to show notifications])
 # ARG_USE_ENV([NOTIFY_TITLE], , [The notification header])

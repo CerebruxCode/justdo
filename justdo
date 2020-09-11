@@ -1,3 +1,46 @@
 #!/usr/bin/env bash
+#
+#    justdo - A simple pomodoro timer for the terminal
+#    Copyright:
+#       2020 Ioannis Tsagatakis <tsagatakis@protonmail.com>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, version 3 of the License.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+function do_install() {
+  prefix=${PREFIX:-/usr/bin}
+  echo "** Installing to ${prefix}"
+  echo "TODO: test it in a VM"
+  exit
+  sudo install usr/bin/justdo "${prefix}/bin"
+  sudo install --directory usr/lib/justdo "${prefix}/lib"
+  sudo install --directory usr/share/justdo "${prefix}/share"
+}
+
+function do_install() {
+  prefix=${PREFIX:-/usr/bin}
+  echo "** Uninstalling from ${prefix}"
+  echo "TODO: test it in a VM"
+  exit
+}
+
+case $1 in
+ --install)
+    do_install
+    exit
+    ;;
+  --uinstall)
+    do_unistall
+    exit;;
+esac
 
 exec ./usr/bin/justdo "$@"
