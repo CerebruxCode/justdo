@@ -1,0 +1,111 @@
+#!/usr/bin/env bash
+#
+#    justdo - A simple pomodoro timer for the terminal
+#    Copyright:
+#       2020 Ioannis Tsagatakis <tsagatakis@protonmail.com>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, version 3 of the License.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+set -e
+base_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+source_lib() {
+    local lib_dir="${base_dir}/../lib/justdo"
+    # shellcheck source=/dev/null
+    source "${lib_dir}/$1.sh"
+}
+
+declare -g _arg_task_name _arg_color _arg_notify _arg_rev_color _arg_show
+declare -g _arg_show_percentage _arg_sound
+declare -i _arg_duration _arg_width
+declare -a _positionals
+
+# Parse command line args
+source_lib "version"
+source_lib "utils"
+source_lib "cli_args"
+parse_commandline "$@"
+handle_passed_args_count
+assign_positional_args 1 "${_positionals[@]}"
+
+# Respect NO_COLOR
+if [[ -v NO_COLOR ]]; then
+  _arg_color="None"
+  _arg_rev_color="None"
+fi
+
+pomodoro_name=$(get_pomodoro_name_dot "${_arg_task_name}" "${_arg_width}")
+pomodoro_almost_done=$(get_pomodoro_name_dot "Revise: ${_arg_task_name}" "${_arg_width}")
+
+# Progress bar loop
+bar_color=$_arg_color
+bar_text=$pomodoro_name
+SECONDS=0
+total_secs=$(( _arg_duration * 60 ))
+for ((i=0; i<total_secs; i++)); do
+  duration=$SECONDS;
+  if (( duration > total_secs )); then
+    break;
+  fi
+
+  if (( duration > 5*total_secs/6 )); then
+    bar_color=$_arg_rev_color
+    bar_text=$pomodoro_almost_done
+  fi
+
+  (( i > loops* 3/4 )) && color=$RED;
+  percentage="$(( 100 - 100*(total_secs - duration) / total_secs ))";
+  bar_width=$(( percentage * _arg_width / 100 ))
+  line=$(color_print "${bar_text}" "$bar_width" "${bar_color}")
+  echo -ne "\r[${line}]"
+
+  if [[ "${_arg_show}" == "on" ]]; then
+    rem=$(do_time_fmt $duration $total_secs)
+    echo -n " Remaining ${rem}"
+  fi
+
+  if [[ "${_arg_show_percentage}" == "on" ]]; then
+    rem=$(do_time_fmt $duration $total_secs)
+    echo -n " Complete ${percentage}%"
+  fi
+
+  sleep 1;
+done
+RESET_LINE="\r\033[K"
+echo -ne "${RESET_LINE}${_arg_task_name}: Done!\n"
+
+# Show Notification
+if [[ "${_arg_notify}" == "on" ]]; then
+  notify_app='notify-send'
+  notify_title="JustDo!"
+  [[ -v NOTIFIER ]] && notify_app=$NOTIFIER
+  [[ -v NOTIFY_TITLE ]] && notify_title=$NOTIFY_TITLE
+  ${notify_app} "${notify_title}" "Task Complete:\n$_arg_task_name"
+fi
+
+# Play Done Sound
+if [[ "${_arg_sound}" == "on" ]]; then
+  sound_app='paplay'
+  [[ -v SPLAYER ]] && sound_app=$NOTIFIER
+
+  share_dir="${base_dir}/../share/justdo"
+  snd_file="${share_dir}/sounds/complete.ogg"
+  [[ -v SND_DONE ]] && snd_file=$NOTIFIER
+
+  if [[ -f "$snd_file" ]]; then
+    ${sound_app} "$snd_file" > /dev/null 2>&1 &
+  else
+    echo "Error: File '$snd_file' not found!"
+    exit
+  fi
+fi

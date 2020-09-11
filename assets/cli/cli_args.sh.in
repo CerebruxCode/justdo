@@ -1,0 +1,35 @@
+#!/bin/bash
+# shellcheck disable=SC1090,SC2154,SC2034
+
+
+# ARGBASH_SET_INDENT([  ])
+# ARG_OPTIONAL_SINGLE([duration], [d], [Pomodoro time in mins], 25 )
+# ARG_OPTIONAL_SINGLE([color], [c], [Color of bar or None], Blue )
+# ARG_OPTIONAL_SINGLE([rev-color], [r], [Color of revision bar or None], Green )
+# ARG_OPTIONAL_SINGLE([width], [w], [Width of bar], 40 )
+# ARG_OPTIONAL_BOOLEAN([notify], , [Notify with message], [on])
+# ARG_OPTIONAL_BOOLEAN([sound], , [Notify with sound], [on])
+# ARG_OPTIONAL_BOOLEAN([show], , [Show time remaining], [on])
+# ARG_OPTIONAL_BOOLEAN([show-percentage], , [Show percentage of time remaining], [off])
+
+# ARG_VERSION_AUTO(["${VERSION}"])
+# ARG_HELP([A simple pomodoro timer for the shell.], [No more deep shits, just use the pomodoro timer.])
+
+# ARG_POSITIONAL_SINGLE([task_name], [Pomodoro task name], [Pomodoro])
+# ARG_POSITIONAL_DOUBLEDASH()
+
+# ARG_USE_ENV([NOTIFIER], , [The executable used to show notifications])
+# ARG_USE_ENV([NOTIFY_TITLE], , [The notification header])
+# ARG_USE_ENV([SPLAYER], , [The executable used to play sounds])
+# ARG_USE_ENV([SND_DONE], , [The done sound file])
+# ARG_USE_ENV([NO_COLOR], , [Disable color output (use any value)])
+
+# ARG_TYPE_GROUP([nnint], [mins], [duration])
+# ARG_TYPE_GROUP([nnint], [secs], [ticks])
+# ARG_TYPE_GROUP([nnint], [chars], [width])
+# ARG_TYPE_GROUP_SET([color], [color], [color,rev-color], [Red,Green,Yellow,Blue,None])
+
+# ARGBASH_PREPARE
+
+# [ <-- needed because of Argbash
+# ] <-- needed because of Argbash
